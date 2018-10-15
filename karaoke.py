@@ -11,12 +11,13 @@ from xml.sax.handler import ContentHandler
 
 
 class KaraokeLocal(SmallSMILHandler)
+    
     def __init__(self, fichero):
         parser = make_parser()
         cHandler = SmallSMILHandler()
         parser.setContenHandler(cHandler)
         parser.parse(open(fichero))
-        sewlf.Tunk = cHandler.get_tags()
+        self.Tunk = cHandler.get_tags()
         
     def do_local(self):
         """
@@ -54,8 +55,17 @@ if __name__=="__main__":
         Fich = KaraokeLocal(fichero)
     except:
         sys.exit("Usage: python3 karaoke.py file smil")
+    
+    """"
+    print(karaoke)
+    karaoke.do_local()
+    karaoke.to_json(fichero)
+    karaoke.to_json(fichero,'local')
+    print(karaoke)
+    """"
     Fich_json =sys.argv[1][:-5] + ".json"
     Fich.__str__()
     fich.to_json(Fich_json)
     fich.do_local(Fich_json, "local.json")
     fich.__str__()
+    
