@@ -1,47 +1,36 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
 
+from xml.sax import make_parser
+from xml.sax.handler import ContentHandler
 
-from xml.sax import make_parser 
-from xml.sax.handler import ContentHandler 
 
-
-class SmallSmilHandler(ContentHandler):
+class SmallSMILHandler(ContentHandler):
 
     def __init__(self):
-        
-        """
-        Inicializamos las variables
-        """
-    
-        self.lista = []
-        self.dic = {'root-layout':['widht', 'height', 'background-color'],
-                        'region':['id', 'top','bottom', 'left', 'right'],
-                        'img':['src', 'begin', 'dur'],
-                        'textstream':['src', 'region']}
-        
-        
-    def startElement(self, name, atrib):
-        """
-        Metodo para abrir etiqueta 
-        """
-    
+        self.motherlist = []
+        self.dic = {'root-layout': ["width", "height", "background-color"],
+                    'region': ['id', 'top', 'bottom', 'left', 'right'],
+                    'img': ['src', 'region', 'begin', 'dur'],
+                    'audio': ['src', 'dur', 'begin'],
+                    'textstream': ['src', 'region']}
+
+    def startElement(self, name, attrs):
+        newdic = {}  # Creación de un diccionario nuevo cada vez.
         if name in self.dic:
-            #Asi cogemos todos losatributos de mi diccionario y no tengo que hacer varios if
-            for atributo in self.dic[name]:
-                self.atrib = {}
-                self.atrib[atributo] = atrib.get(atributo, "")
-                self.lista.append(self.atrib)
-            
-    
+            for i in self.dic[name]:
+                newdic[i] = attrs.get(i, "")
+            self.motherlist.append({name: newdic})
+
     def get_tags(self):
-        return self.lista
-    
-            
+        return self.motherlist
+
 if __name__ == "__main__":
-        
-    CHandler = SmallSmilHandler()
+    """
+    Programa principal
+    """
     parser = make_parser()
-    parser.setContentHandler(CHandler)
+    KJandler = SmallSMILHandler()
+    parser.setContentHandler(KJandler)
     parser.parse(open('karaoke.smil'))
-    print(CHandler.get_tags())
+    print(KJandler.get_tags())
