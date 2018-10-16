@@ -6,40 +6,42 @@ from xml.sax import make_parser
 from xml.sax.handler import ContentHandler 
 
 
-class SmallSMILHandler(ContentHandler)
+class SmallSmilHandler(ContentHandler):
 
     def __init__(self):
-    """
-    Inicializamos las variables
-    """
-        self.etiquetas = []
-        self.list = {'root-layout':['widht', 'height', 'background-color'],
+        
+        """
+        Inicializamos las variables
+        """
+    
+        self.lista = []
+        self.dic = {'root-layout':['widht', 'height', 'background-color'],
                         'region':['id', 'top','bottom', 'left', 'right'],
                         'img':['src', 'begin', 'dur'],
                         'textstream':['src', 'region']}
         
         
-    def startElement(self, name, attrs):
-    """
-    Metodo para abrir etiqueta 
-    """
+    def startElement(self, name, atrib):
+        """
+        Metodo para abrir etiqueta 
+        """
     
-    if name in self.list:
-        #Asi cogemos todos losatributos de mi diccionario y no tengo que hacer varios if
-        print(name)
-        for attrs in self.list[name]
-            self.attrs = {}
-            self.attr[valor] = attrs.get(valor, "")
-            self.list.appenjd(self.attrs)
+        if name in self.dic:
+            #Asi cogemos todos losatributos de mi diccionario y no tengo que hacer varios if
+            for atributo in self.dic[name]:
+                self.atrib = {}
+                self.atrib[atributo] = atrib.get(atributo, "")
+                self.lista.append(self.atrib)
             
     
     def get_tags(self):
-        return self.etiquetas
+        return self.lista
     
             
-    if __name__ == "__main__":
+if __name__ == "__main__":
         
-        cHandler = SmallSMILHandler()
-        parser = make_parser()
-        parser.setContentHandler(cHandler)
-        parser.parse(open('karaoke.smil'))
+    CHandler = SmallSmilHandler()
+    parser = make_parser()
+    parser.setContentHandler(CHandler)
+    parser.parse(open('karaoke.smil'))
+    print(CHandler.get_tags())
